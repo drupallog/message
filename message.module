@@ -172,7 +172,7 @@ function message_cron() {
 
   // Delete all gathered messages.
   if (!empty($purge_messages)) {
-    \Drupal::entityManager()->getStorage('message')->delete($purge_messages);
+    \Drupal::entityTypeManager()->getStorage('message')->delete($purge_messages);
   }
 }
 

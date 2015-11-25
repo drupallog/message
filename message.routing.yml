@@ -31,8 +31,9 @@ entity.message_type.delete_form:
   requirements:
     _permission: 'administer message types'
 
+#@todo: This overwrites the view page setting. Solution?
 message.messages:
-  path: '/admin/content/message'
+  path: '/admin/content/messages'
   defaults:
     _title: 'Messages'
     _entity_list: 'message'
@@ -57,7 +58,7 @@ message.settings:
     _permission: 'administer message types'
 
 message.multiple_delete_confirm:
-  path: '/admin/content/message/delete'
+  path: '/admin/content/messages/delete'
   defaults:
     _form: '\Drupal\message\Form\DeleteMultiple'
   requirements:

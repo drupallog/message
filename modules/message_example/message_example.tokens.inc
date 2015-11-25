@@ -96,30 +96,32 @@ function message_example_tokens($type, $tokens, array $data = array(), array $op
           break;
         case 'node-title':
             if ($message->bundle() == 'example_create_comment') {
-              $replacements[$original] = $message->field_comment_reference->entity->getCommentedEntity()->label();
+              $replacements[$original] = $message->get('field_comment_reference')->getEntity()->label();
             }
             else {
-              $replacements[$original] = $message->field_node_reference->get(0)->entity->label();
+              $replacements[$original] = $message->get('field_node_reference')->getEntity()->label();
             }
           break;
         case 'node-url':
           if ($message->bundle() == 'example_create_comment') {
-            $replacements[$original] = $message->field_comment_reference->entity->getCommentedEntity()->url();
+            $replacements[$original] =$message->get('field_comment_reference')->getEntity()->toUrl()->toString();
           }
           else {
-            $replacements[$original] = $message->field_node_reference->get(0)->entity->url();
+            $replacements[$original] = $message->get('field_node_reference')->getEntity()->toUrl()->toString();
           }
           break;
         case 'node-render':
           if ($message->bundle() == 'example_create_comment') {
-            $replacements[$original] = render(entity_view($message->field_comment_reference->entity->getCommentedEntity(), 'teaser'));
+            $view_builder = \Drupal::entityTypeManager()->getViewBuilder($message->getEntityTypeId());
+            $replacements[$original] = render($view_builder->view($message->get('field_comment_reference')->getEntity(), 'teaser', $langcode));
           }
           else {
-            $replacements[$original] = render(entity_view($message->field_node_reference->get(0)->entity, 'teaser'));
+            $view_builder = \Drupal::entityTypeManager()->getViewBuilder($message->getEntityTypeId());
+            $replacements[$original] = render($view_builder->view($message->get('field_node_reference')->getEntity(), 'teaser', $langcode));
           }
           break;
         case 'comment-url':
-          $replacements[$original] = $message->field_comment_reference->entity->id();
+          $replacements[$original] = $message->get('field_comment_reference')->getEntity()->id();
           break;
       }
     }

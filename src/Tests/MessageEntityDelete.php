@@ -54,7 +54,7 @@ class MessageEntityDelete extends MessageTestBase {
     $this->createMessageType('dummy_message', 'Dummy message', 'This is a dummy message text', array('Dummy message type.'));
 
     // Create a vocabulary.
-    $this->vocabulary = entity_create('taxonomy_vocabulary', array(
+    $this->vocabulary = Vocabulary::create(array(
       'name' => $this->randomMachineName(),
       'description' => $this->randomMachineName(),
       'vid' => Unicode::strtolower($this->randomMachineName()),
@@ -74,12 +74,12 @@ class MessageEntityDelete extends MessageTestBase {
     $this->contentType = $this->drupalCreateContentType();
 
     for ($i = 0; $i <= 5; $i++) {
-      entity_create('node', array(
+      Node::create(array(
         'type' => $this->contentType->id(),
         'title' => 'Node ' . $i,
       ))->save();
 
-      entity_create('taxonomy_term', array(
+      Term::create(array(
         'vid' => $this->vocabulary->id(),
         'name' => 'term ' . $i,
       ))->save();
@@ -192,6 +192,7 @@ class MessageEntityDelete extends MessageTestBase {
     $message->set('field_term_reference', $term);
     $message->save();
 
+    /* @var $term Term */
     $term->delete();
     $this->assertFalse(Message::load($message->id()), 'Message deleted after deleting single referenced term.');
 

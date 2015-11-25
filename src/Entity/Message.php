@@ -317,9 +317,7 @@ class Message extends ContentEntityBase implements MessageInterface {
       $output = strtr($output, $args);
     }
 
-    $output = \Drupal::token()->replace($output, array('message' => $this), $options);
-
-    return $output;
+    return ['#markup' => \Drupal::token()->replace($output, array('message' => $this), $options)];
   }
 
   /**

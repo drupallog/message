@@ -8,7 +8,6 @@
 namespace Drupal\message;
 
 use Drupal\Core\Config\Entity\ConfigEntityListBuilder;
-use Drupal\Core\Entity\EntityInterface;
 use Drupal\Component\Utility\Xss;
 
 /**
@@ -33,11 +32,13 @@ class MessageTypeListBuilder extends ConfigEntityListBuilder {
   /**
    * {@inheritdoc}
    */
-  public function buildRow(EntityInterface $entity) {
+  public function buildRow(MessageTypeInterface $entity) {
     $row['title'] = array(
-      'data' => $this->getLabel($entity),
+      'data' => $entity->label(),
       'class' => array('menu-label'),
     );
+
+    /* @var $entity \Drupal\message\Entity\MessageType */
     $row['description'] = Xss::filterAdmin($entity->getDescription());
     return $row + parent::buildRow($entity);
   }

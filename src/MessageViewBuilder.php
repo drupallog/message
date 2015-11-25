@@ -7,6 +7,7 @@
 
 namespace Drupal\message;
 
+use Drupal\Core\Entity\Entity\EntityViewDisplay;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityViewBuilder;
 
@@ -22,6 +23,7 @@ class MessageViewBuilder extends EntityViewBuilder {
     $build = parent::view($entity, $view_mode, $langcode);
 
     // Load the partials in the correct language.
+    /* @var $entity \Drupal\message\Entity\Message */
     $partials = $entity->getType()->getText(NULL, array('text' => TRUE));
 
     if (!$langcode) {
@@ -36,17 +38,17 @@ class MessageViewBuilder extends EntityViewBuilder {
     $extra = '';
 
     // Get the partials the user selected for the current view mode.
-    $extra_fields = entity_get_display('message', $entity->bundle(), $view_mode);
+    $render_displays = EntityViewDisplay::collectRenderDisplays([$entity], $view_mode);
+    $extra_fields = $render_displays[$entity->bundle()];
+
     foreach (array_keys($extra_fields->getComponents()) as $extra_fields) {
       list(, $delta) = explode('_', $extra_fields);
 
-      $extra .= $partials[$langcode][$delta];
+      $extra .= $partials[$delta];
     }
 
-    $build = array(
-      '#markup' => $extra,
-    );
+    $build['#markup'] = $extra;
 
-    return ($build);
+    return $build;
   }
 }

@@ -6,6 +6,8 @@
  *
  */
 
+use Drupal\message\Entity\MessageType;
+
 /**
  * @addtogroup hooks
  * @{
@@ -72,7 +74,7 @@ function hook_message_view_alter(&$build) {
  * @see hook_default_message_type_alter()
  */
 function hook_default_message_type() {
-  $defaults['main'] = entity_create('message_type', array(
+  $defaults['main'] = MessageType::create(array(
   ));
   return $defaults;
 }
